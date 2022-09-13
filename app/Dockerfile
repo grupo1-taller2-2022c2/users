@@ -10,6 +10,6 @@ RUN apt-get install -y \
   gcc \
   && apt-get clean
 
-RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2
+RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2 uvicorn
 
 COPY ./app /app/app
