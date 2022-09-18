@@ -6,8 +6,6 @@ services:
     container_name: postgres-container
     environment:
       - POSTGRES_PASSWORD=grupo1
-    # volumes:
-    #   - .:/var/lib/postgresql/data
     expose:
       - 5432
     ports:
