@@ -1,0 +1,40 @@
+version: "3.3"
+services:
+
+  dev_db:
+    image: postgres
+    container_name: postgres-container
+    environment:
+      - POSTGRES_PASSWORD=grupo1
+    # volumes:
+    #   - .:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    networks:
+      - my_network
+
+  users_backend:
+    restart: always
+    build: . # Buildea la imagen a partir del Dockerfile
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    ports:
+      - 3001:3000
+    expose:
+      - 3000
+    volumes:
+      - ./app:/app/app
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:grupo1@postgres-container:5432/postgres
+      - POSTGRES_PASSWORD=grupo1
+    depends_on:
+      - dev_db
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

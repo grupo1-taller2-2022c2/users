@@ -1,8 +1,10 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
 
-RUN apt-get update && apt-get install
+COPY ./app /app/app
 
-RUN apt-get install -y \
+RUN apt-get -y update
+
+RUN apt-get -y install \
   dos2unix \
   libpq-dev \
   libmariadb-dev-compat \
@@ -11,5 +13,3 @@ RUN apt-get install -y \
   && apt-get clean
 
 RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2 uvicorn pydantic[email]
-
-COPY ./app /app/app
