@@ -1,0 +1,5 @@
+name: 'Setup Docker'
+description: 'Sets up the docker (I think, SOS, help)'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
