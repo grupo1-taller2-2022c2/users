@@ -6,3 +6,4 @@ typing~=3.7.4.3
 requests~=2.25.1
 behave~=1.2.6
 uvicorn==0.17.6
+starlette~=0.19.1

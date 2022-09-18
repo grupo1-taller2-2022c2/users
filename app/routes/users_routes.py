@@ -22,6 +22,6 @@ def get_db():
         db.close()
 
 
-@router.get("/signin",  status_code=status.HTTP_200_OK)
+@router.post("/signin",  status_code=status.HTTP_200_OK)
 def user_signin(user: UserSignIn, db: Session = Depends(get_db)):
     return validate_user(user.email, user.password, db)
