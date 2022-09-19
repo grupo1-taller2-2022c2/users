@@ -12,7 +12,18 @@ services:
       - 5432:5432
     networks:
       - my_network
-
+  
+  test:
+    image: python:3.8-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "python test/test-ci.py"
+    volumes:
+      - ./app:/app/app
+    depends_on:
+      - dev_db
+  
   users_backend:
     restart: always
     build: . # Buildea la imagen a partir del Dockerfile
