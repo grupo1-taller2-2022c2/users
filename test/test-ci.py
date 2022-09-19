@@ -10,4 +10,4 @@ def test_user_cant_login_if_it_doesnt_exist():
 	assert response.status_code == 403
 	assert response.json() == {"detail": "Incorrect mail or password"}
 	
-test()
+test_user_cant_login_if_it_doesnt_exist()
