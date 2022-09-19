@@ -1,3 +1,4 @@
+from urllib import response
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 
@@ -25,3 +26,8 @@ def get_db():
 @router.post("/signin",  status_code=status.HTTP_200_OK)
 def user_signin(user: UserSignIn, db: Session = Depends(get_db)):
     return validate_user(user.email, user.password, db)
+
+
+@router.get("/", response_model=List[User], status_code=status.HTTP_200_OK)
+def get_users(db: Session = Depends(get_db)):
+    return get_users_from_db(db)
