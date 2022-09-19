@@ -16,20 +16,42 @@ services:
   users_backend:
     restart: always
     build: . # Buildea la imagen a partir del Dockerfile
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
+    container_name: users-backend-container
+    stdin_open: true 
+    tty: true        
     ports:
       - 3001:3000
     expose:
       - 3000
     volumes:
       - ./app:/app/app
+    links:
+      - dev_db
     environment:
       - PORT=3000
       - DATABASE_URL=postgresql://postgres:grupo1@postgres-container:5432/postgres
       - POSTGRES_PASSWORD=grupo1
     depends_on:
       - dev_db
+    networks:
+      - my_network
+
+  backoffice_frontend:
+    restart: always
+    build: ..//skeleton-app/ # Poner acá la ruta para el dockerfile del front
+    container_name: backoffice-frontend-container
+    stdin_open: true 
+    tty: true        
+    ports:
+      - 3000:3000
+    depends_on:
+      - dev_db
+      - users_backend
+    expose:
+      - 3000
+    environment:
+      - REACT_APP_BACKEND_DIRECTION=http://localhost:3001
+      - PORT=3000
     networks:
       - my_network
 
