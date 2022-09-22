@@ -1,4 +1,3 @@
-from urllib import response
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List
 
@@ -31,3 +30,19 @@ def user_signin(user: UserSignIn, db: Session = Depends(get_db)):
 @router.get("/", response_model=List[User], status_code=status.HTTP_200_OK)
 def get_users(db: Session = Depends(get_db)):
     return get_users_from_db(db)
+
+
+@router.post("/signup", response_model=User, status_code=status.HTTP_201_CREATED)
+def user_signup(user: UserSignUp, db: Session = Depends(get_db)):
+    user_db = get_user(user.email, db)
+    if user_db:
+        raise HTTPException(status_code=409, detail="The user already exists")
+    return register_user(user, db)
+
+
+@router.post("/address", status_code=status.HTTP_200_OK)
+def user_add_pred_address(user: UserAddress, db: Session = Depends(get_db)):
+    return add_pred_address(user, db)
+
+
+# @router.post("/vehicle", status_code=status.HTTP_200_OK)

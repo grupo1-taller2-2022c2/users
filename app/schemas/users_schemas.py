@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, EmailStr
 
 
 class UserSignIn(BaseModel):
@@ -6,9 +6,24 @@ class UserSignIn(BaseModel):
     password: str
 
 
+class UserSignUp(BaseModel):
+    email: EmailStr
+    password: str
+    username: str
+    surname: str
+
+
+class UserAddress(BaseModel):
+    email: EmailStr
+    street_name: str
+    street_number: int
+
+
 class User(BaseModel):
     email: EmailStr
     password: str
+    username: str
+    surname: str
 
     class Config:
         orm_mode = True
