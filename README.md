@@ -20,7 +20,7 @@
   2. Vamos a alembic/versions, buscamos la versión que recién creamos y comprobamos que el upgrade y downgrade estén bien (si no, los modificamos)
   3. ```alembic upgrade head``` para que impacte el cambio en la base de datos. Este comando es el que también se corre ni bien se levanta el container de la base, ya que esta empieza vacía y debemos popularla con la estructura
   
-- Si queremos modificar la base pero sin que hayamos agregado algo en app/models, lo que hacemos es:
+- Si queremos modificar la base pero hacerlo manualmente (y no depender de que lo detecte de app/models), lo que hacemos es:
   1. ```alembic revision -m "nombre_del_cambio"```
   2. Vamos a alembic/versions, buscamos la versión que recién creamos y completamos el upgrade y downgrade
   3. ```alembic upgrade head```
