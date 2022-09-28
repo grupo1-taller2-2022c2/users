@@ -1,14 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import List
+import hashlib
 
-from sqlalchemy.orm import Session
 from starlette import status
-
-from ..database import SessionLocal
-
-from ..cruds.users_cruds import *
-
-from ..schemas.users_schemas import *
+from app.database import SessionLocal
+from app.cruds.users_cruds import *
+from app.schemas.users_schemas import *
 
 router = APIRouter()
 
@@ -22,9 +20,20 @@ def get_db():
         db.close()
 
 
-@router.post("/signin",  status_code=status.HTTP_200_OK)
-def user_signin(user: UserSignIn, db: Session = Depends(get_db)):
-    return validate_user(user.email, user.password, db)
+def hash_password(password):
+    return int(hashlib.sha256(password.encode('utf-8')).hexdigest(), 16) % 10**8
+
+
+@router.post("/token",  status_code=status.HTTP_200_OK)
+def user_signin(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user_db = get_user(form_data.username, db)
+    if not user_db:
+        raise HTTPException(status_code=403, detail="Incorrect username or password")
+    if user_db.blocked:
+        raise HTTPException(status_code=403, detail="The user has been blocked by the admin")
+    hashed_password = hash_password(form_data.password)
+    validate_user(form_data.username, hashed_password, db)
+    return {"access_token": user_db.username, "token_type": "bearer"}
 
 
 @router.get("/", response_model=List[User], status_code=status.HTTP_200_OK)
@@ -38,11 +47,3 @@ def user_signup(user: UserSignUp, db: Session = Depends(get_db)):
     if user_db:
         raise HTTPException(status_code=409, detail="The user already exists")
     return register_user(user, db)
-
-
-@router.post("/address", status_code=status.HTTP_200_OK)
-def user_add_pred_address(user: UserAddress, db: Session = Depends(get_db)):
-    return add_pred_address(user, db)
-
-
-# @router.post("/vehicle", status_code=status.HTTP_200_OK)

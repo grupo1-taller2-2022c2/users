@@ -1,9 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from .database import Base, engine
-
-from .routes import users_routes
+from app.database import Base, engine
+from app.routes import users_routes, passengers_routes, drivers_routes
 
 
 app = FastAPI()
@@ -27,3 +25,5 @@ async def root():
 Base.metadata.create_all(bind=engine)
 
 app.include_router(users_routes.router, prefix="/users", tags=["users"])
+app.include_router(passengers_routes.router, prefix="/passengers", tags=["passengers"])
+app.include_router(drivers_routes.router, prefix="/drivers", tags=["drivers"])

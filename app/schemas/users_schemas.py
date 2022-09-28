@@ -13,12 +13,6 @@ class UserSignUp(BaseModel):
     surname: str
 
 
-class UserAddress(BaseModel):
-    email: EmailStr
-    street_name: str
-    street_number: int
-
-
 class User(BaseModel):
     email: EmailStr
     password: str
