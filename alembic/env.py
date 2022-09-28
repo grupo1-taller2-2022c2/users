@@ -5,7 +5,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from app.models import Base
+# NO BORRAR ESTA LINEA por mas que los imports no se usen!
+from app.models import Base, users_models, passengers_models, drivers_models
 from app.database import get_database_url
 
 # this is the Alembic Config object, which provides

@@ -15,7 +15,9 @@
 ## Base de datos
 - Se corre en el container postgres-container (servicio dev_db del docker-compose)
   
-- Si agregamos, modificamos, o lo que sea un modelo en app/models (ej: agrego una columna al modelo user_models), entonces debemos hacer:
+- IMPORTANTE: Si agregamos, modificamos, o lo que sea un modelo en app/models (ej: agrego una columna al modelo user_models), entonces debemos hacer:
+  
+  0. **Si es que creamos un nuevo archivo de models, lo tenemos que agregar al archivo `alembic/env.py` a la línea `from app.models import Base, ..., acá!`** para que alembic pueda trackear las tablas de ese archivo
   1. ```alembic revision --autogenerate -m "nombre_del_cambio"``` que va a generar una nueva versión de la base
   2. Vamos a alembic/versions, buscamos la versión que recién creamos y comprobamos que el upgrade y downgrade estén bien (si no, los modificamos)
   3. ```alembic upgrade head``` para que impacte el cambio en la base de datos. Este comando es el que también se corre ni bien se levanta el container de la base, ya que esta empieza vacía y debemos popularla con la estructura

@@ -27,13 +27,13 @@ docker-compose up -d $FRONTEND_SERVICE_NAME
 
 echo "Splitting into two terminals..."
 
-gnome-terminal --tab --title='logs_backend' -e "docker-compose up $BACKEND_SERVICE_NAME" 
+gnome-terminal -q --tab --title='logs_backend' -e "docker-compose up $BACKEND_SERVICE_NAME" 
 
 # Lo siguiente se ejecuta sólo por la tab actual (no la logs_backend)
 sleep 5
 
-# echo "Applying migrations to database..."
-# docker-compose exec $BACKEND_SERVICE_NAME alembic upgrade head || echo "Wait for image to build and run ./start_dev.sh again..."
+echo "Applying migrations to database..."
+docker-compose exec $BACKEND_SERVICE_NAME alembic upgrade head || echo "Wait for image to build and run ./start_dev.sh again..."
 
 echo "Entering bash console for users backend..."
 docker-compose exec $BACKEND_SERVICE_NAME /bin/bash || echo "Wait for image to build and run ./start_dev.sh again..."
