@@ -35,6 +35,8 @@ else
 fi
 
 sleep 3
+echo "Applying migrations to database..."
+docker-compose exec $BACKEND_SERVICE_NAME alembic upgrade head
+
 echo "Entering bash console for users backend..."
 docker-compose exec $BACKEND_SERVICE_NAME /bin/bash
-# alembic upgrade head

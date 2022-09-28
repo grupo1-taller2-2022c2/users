@@ -6,19 +6,14 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from app.models import users_models
+from app.database import get_database_url
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-
-uri = os.getenv("DATABASE_URL")
-if uri and uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-
-
 # this will overwrite the alembic.ini file sqlalchemy.url path
-config.set_main_option('sqlalchemy.url', f'{uri}')
+config.set_main_option('sqlalchemy.url', f'{get_database_url()}')
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
