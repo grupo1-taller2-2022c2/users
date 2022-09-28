@@ -23,17 +23,19 @@ echo "Deleting containers if exist..."
 docker-compose up -d $DB_SERVICE_NAME 
 sleep 3
 
+docker-compose up -d $FRONTEND_SERVICE_NAME
+
+echo "Splitting into two terminals..."
+
 if [[ $1 = "rebuild" ]];
 then
-    echo "Rebuilding images..."
-    docker-compose up --build -d $FRONTEND_SERVICE_NAME
-    docker-compose up --build -d $BACKEND_SERVICE_NAME
+    echo "Rebuilding backend  image..."
+    gnome-terminal --tab --title='logs_backend' -e "docker-compose up --build $BACKEND_SERVICE_NAME" --tab --title='console_backend' 
 else
-    docker-compose up -d $FRONTEND_SERVICE_NAME
-    sleep 2
-    docker-compose up -d $BACKEND_SERVICE_NAME
+    gnome-terminal --tab --title='logs_backend' -e "docker-compose up $BACKEND_SERVICE_NAME" --tab --title='console_backend' 
 fi
 
+# Lo siguiente se ejecuta sólo por la tab console_backend
 sleep 3
 echo "Applying migrations to database..."
 docker-compose exec $BACKEND_SERVICE_NAME alembic upgrade head
