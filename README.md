@@ -26,6 +26,8 @@
   1. ```alembic revision -m "nombre_del_cambio"```
   2. Vamos a alembic/versions, buscamos la versión que recién creamos y completamos el upgrade y downgrade
   3. ```alembic upgrade head```
+
+- Para agregar valores automáticamente (que siempre queramos que estén en la base por ej. para probar) podemos agregar los valores tal como se ve en la migration `..._insert_values_to_tables` en `alembic/versions` debajo de los que ya se agregan. De ser necesario, importar tablas del models
     
 - Si nos quisiéramos conectar desde pgadmin/dbeaver/etc., tenemos que conectarnos a ese container (es el servidor), con lo cual:
   - Para saber la IP (Host) de ese container hacemos ```docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres-container```

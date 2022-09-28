@@ -8,7 +8,6 @@ Create Date: 2022-09-28 21:04:55.731417
 from alembic import op
 import sqlalchemy as sa
 
-
 # revision identifiers, used by Alembic.
 revision = 'e1e060a9adeb'
 down_revision = None
@@ -37,18 +36,21 @@ def upgrade() -> None:
                     sa.Column('ratings', sa.Integer(), nullable=False),
                     sa.PrimaryKeyConstraint('user_id')
                     )
-    op.create_table('users',
-                    sa.Column('user_id', sa.Integer(),
-                              autoincrement=True, nullable=False),
-                    sa.Column('email', sa.String(length=50), nullable=False),
-                    sa.Column('password', sa.String(
-                        length=50), nullable=False),
-                    sa.Column('username', sa.String(
-                        length=50), nullable=False),
-                    sa.Column('surname', sa.String(length=50), nullable=False),
-                    sa.Column('blocked', sa.Boolean(), nullable=False),
-                    sa.PrimaryKeyConstraint('user_id')
-                    )
+    global users
+    users = op.create_table('users',
+                            sa.Column('user_id', sa.Integer(),
+                                      autoincrement=True, nullable=False),
+                            sa.Column('email', sa.String(
+                                length=50), nullable=False),
+                            sa.Column('password', sa.String(
+                                length=50), nullable=False),
+                            sa.Column('username', sa.String(
+                                length=50), nullable=False),
+                            sa.Column('surname', sa.String(
+                                length=50), nullable=False),
+                            sa.Column('blocked', sa.Boolean(), nullable=False),
+                            sa.PrimaryKeyConstraint('user_id')
+                            )
     op.create_table('vehicles',
                     sa.Column('user_id', sa.Integer(),
                               autoincrement=True, nullable=False),
