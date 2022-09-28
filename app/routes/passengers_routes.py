@@ -3,18 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 
 from app.cruds.users_cruds import get_user
-from app.database import SessionLocal
 from app.cruds.passengers_cruds import *
 from app.schemas.passengers_schemas import *
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
+from app.database import get_db
 
 router = APIRouter()
 

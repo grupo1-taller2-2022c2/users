@@ -1,10 +1,10 @@
 from app.models.users_models import User
 from app.schemas.users_schemas import User, UserSignUp
-from app.routes.users_routes import hash_password
 from app.cruds.passengers_cruds import create_passenger
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from app.helpers.user_helpers import hash_password
 
 
 def get_user(user_email: EmailStr, db: Session):
