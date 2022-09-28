@@ -46,7 +46,7 @@ services:
       - 3000:3000
     depends_on:
       - dev_db
-      - users_backend
+      # - users_backend
     expose:
       - 3000
     volumes:

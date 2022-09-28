@@ -30,6 +30,7 @@ then
     docker-compose up --build -d $BACKEND_SERVICE_NAME
 else
     docker-compose up -d $FRONTEND_SERVICE_NAME
+    sleep 2
     docker-compose up -d $BACKEND_SERVICE_NAME
 fi
 
