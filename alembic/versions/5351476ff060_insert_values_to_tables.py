@@ -20,15 +20,15 @@ depends_on = None
 def upgrade() -> None:
     op.bulk_insert(User.__table__,
                    [
-                       {'email': 'agus_su@gmail.com', 'password': '123',
-                        'username': 'pepe', 'surname': "pepo", 'blocked': False},
-                       {'email': 'chino@hotmail.com', 'password': '1234',
-                        'username': 'pepe', 'surname': "pepo", 'blocked': False},
-                       {'email': 'mati@yahoo.com', 'password': '1235',
-                        'username': 'pepe', 'surname': "pepo", 'blocked': False},
-                       {'email': 'juani@gmail.com', 'password': '1236',
-                        'username': 'pepe', 'surname': "pepo", 'blocked': False},
-                       {'email': 'cristo@gmail.com', 'password': '1237', 'username': 'pepe', 'surname': "pepo", 'blocked': False}])
+                       {'email': 'agus_su@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+                        'username': 'agusmujer', 'surname': "su", 'blocked': False},
+                       {'email': 'chino@hotmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+                        'username': 'chino', 'surname': "g", 'blocked': False},
+                       {'email': 'mati@yahoo.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+                        'username': 'mati', 'surname': "matii", 'blocked': False},
+                       {'email': 'juani@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+                        'username': 'juani', 'surname': "blabla", 'blocked': False},
+                       {'email': 'cristo@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'username': 'cristo', 'surname': "apellido", 'blocked': False}])
 
 
 def downgrade() -> None:

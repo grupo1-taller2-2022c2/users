@@ -42,8 +42,8 @@ def upgrade() -> None:
                                       autoincrement=True, nullable=False),
                             sa.Column('email', sa.String(
                                 length=50), nullable=False),
-                            sa.Column('password', sa.String(
-                                length=50), nullable=False),
+                            sa.Column('password', sa.String(length=100),
+                                      nullable=False),
                             sa.Column('username', sa.String(
                                 length=50), nullable=False),
                             sa.Column('surname', sa.String(

@@ -8,8 +8,9 @@
   - el back
     - luego de inicializarse se corren las migrations (alembic upgrade head)
     - finalmente nos deja en una terminal de bash para ejecutar comandos si lo necesitamos
+  - Cuando corramos el script, va a levantar dos terminales: en una va a mostrar los logs del back (para debuguear); en la otra va a levantar un bash para que corramos comandos de ser necesario (por ejemplo, los comandos de alembic)
 
-- A priori, no deberíamos hacerlo, pero de ser necesario rebuildear las imágenes de los containers, podemos correr ```./start_dev rebuild```
+- A priori, no deberíamos hacerlo, pero de ser necesario rebuildear la del container del back, podemos correr ```./rebuild_backend_image.sh```
 - Cualquier cosa [este enlace tiene info interesante](https://ahmed-nafies.medium.com/fastapi-with-sqlalchemy-postgresql-and-alembic-and-of-course-docker-f2b7411ee396)
 
 ## Base de datos

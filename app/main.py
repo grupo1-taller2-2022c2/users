@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import users_routes, passengers_routes, drivers_routes
+from app.routes import authorization_routes, users_routes, passengers_routes, drivers_routes, authorization_routes
 
 app = FastAPI()
 
@@ -19,6 +19,7 @@ app.add_middleware(
 async def root():
     return {"message": "Go sign in"}
 
+app.include_router(authorization_routes.router, tags=["auth"])
 app.include_router(users_routes.router, prefix="/users", tags=["users"])
 app.include_router(passengers_routes.router,
                    prefix="/passengers", tags=["passengers"])

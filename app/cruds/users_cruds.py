@@ -1,5 +1,3 @@
-# from app.models.users_models import User
-# from app.schemas.users_schemas import User, UserSignUp
 import app.models.users_models as users_models
 import app.schemas.users_schemas as user_schemas
 from app.cruds.passengers_cruds import create_passenger
@@ -9,13 +7,21 @@ from fastapi import HTTPException
 from app.helpers.user_helpers import hash_password
 
 
-def get_user(user_email: EmailStr, db: Session):
-    return db.query(users_models.User).filter(user_schemas.User.email == user_email).first()
+def fake_decode_token(token, db):
+    # This doesn't provide any security at all
+    # Check the next version
+    # el token es el usuario, por eso lo trae...
+    user = get_user_by_email(token, db)
+    return user
 
 
-def validate_user(user_email: EmailStr, password: int, db: Session):
-    user = get_user(user_email, db)
-    if not user or (user.password != password):
+def get_user_by_email(user_email: EmailStr, db: Session):
+    return db.query(users_models.User).filter(users_models.User.email == user_email).first()
+
+
+def validate_user(user_email: EmailStr, hashed_password: str, db: Session):
+    user = get_user_by_email(user_email, db)
+    if not user or (user.password != hashed_password):
         raise HTTPException(
             status_code=403, detail="Incorrect mail or password")
 
