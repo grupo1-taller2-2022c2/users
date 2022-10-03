@@ -1,19 +1,19 @@
 from pydantic import BaseModel, EmailStr
 
 
-class UserSignIn(BaseModel):
+class UserSignInSchema(BaseModel):
     email: EmailStr
     password: str
 
 
-class UserSignUp(BaseModel):
+class UserSignUpSchema(BaseModel):
     email: EmailStr
     password: str
     username: str
     surname: str
 
 
-class User(BaseModel):
+class UserSchema(BaseModel):
     email: EmailStr
     password: str
     username: str

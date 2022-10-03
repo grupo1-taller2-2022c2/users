@@ -26,21 +26,21 @@ def validate_user(user_email: EmailStr, hashed_password: str, db: Session):
             status_code=403, detail="Incorrect mail or password")
 
 
-def register_user(user: user_schemas.UserSignUp, db: Session):
-    db_user = user_schemas.User(
+def register_user(user: user_schemas.UserSignUpSchema, db: Session):
+    db_user = users_models.User(
         email=user.email,
         password=hash_password(user.password),
         username=user.username,
         surname=user.surname,
-        blocked=False,
+        blocked=False
     )
     try:
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
-        create_passenger(db_user.id, db)
-        return users_models.User
-    except Exception:
+        create_passenger(db_user.user_id, db)
+        return user_schemas.UserSchema.from_orm(db_user)
+    except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
 
 

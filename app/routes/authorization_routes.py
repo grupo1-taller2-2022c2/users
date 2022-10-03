@@ -25,7 +25,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
-def get_current_active_user(current_user: User = Depends(get_current_user)):
+def get_current_active_user(current_user: UserSchema = Depends(get_current_user)):
     if False:  # current_user.disabled:  # TODO: campo disabled todavia no existe
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
@@ -49,5 +49,5 @@ def user_signin(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
 
 
 @router.get("/me")
-def read_users_me(current_user: User = Depends(get_current_active_user)):
+def read_users_me(current_user: UserSchema = Depends(get_current_active_user)):
     return current_user
