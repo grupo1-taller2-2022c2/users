@@ -1,0 +1,2 @@
+with open("log_file.txt", 'w') as file:
+        file.write(f'{token}')
