@@ -1,4 +1,12 @@
-def test_mock():
-	assert True
+from fastapi.testclient import TestClient
+from app.main import app
 
-test_mock()
+client = TestClient(app)
+
+
+def test_root():
+    response = client.get("/")
+    assert response.json() == {"message": "Go sign in"}
+
+
+test_root()
