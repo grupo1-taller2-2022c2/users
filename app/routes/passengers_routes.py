@@ -10,7 +10,7 @@ from app.database import get_db
 router = APIRouter()
 
 
-@router.post("/address", status_code=status.HTTP_200_OK)
+@router.post("/address", status_code=status.HTTP_201_CREATED)
 def user_add_pred_address(user: PassengerAddress, db: Session = Depends(get_db)):
     db_user = get_user_by_email(user.email, db)
     if not db_user:

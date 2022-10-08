@@ -25,12 +25,21 @@ def should_grant_access(user: UserSignInSchema, db: Session = Depends(get_db)):
     return user_schemas.UserSchema.from_orm(user_db)
 
 
-@router.get("/{username}", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
+@router.get("/{username}", response_model=UserProfile, status_code=status.HTTP_200_OK)
 def get_user(username: str, db: Session = Depends(get_db)):
     user_db = get_user_by_email(username, db)
     if not user_db:
         raise HTTPException(
-            status_code=403, detail="Incorrect username or password")
+            status_code=404, detail="The user doesn't exist")
+    return user_schemas.UserProfile.from_orm(user_db)
+
+
+@router.get("/me/{username}", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
+def get_user(username: str, db: Session = Depends(get_db)):
+    user_db = get_user_by_email(username, db)
+    if not user_db:
+        raise HTTPException(
+            status_code=404, detail="The user doesn't exist")
     return user_schemas.UserSchema.from_orm(user_db)
 
 

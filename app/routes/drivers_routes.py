@@ -8,7 +8,7 @@ from app.database import get_db
 router = APIRouter()
 
 
-@router.post("/vehicle", status_code=status.HTTP_200_OK)
+@router.post("/vehicle", status_code=status.HTTP_201_CREATED)
 def add_vehicle(vehicle: DriverVehicle, db: Session = Depends(get_db)):
     db_user = get_user_by_email(vehicle.email, db)
     if not db_user:
