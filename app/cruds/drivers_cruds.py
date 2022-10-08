@@ -20,7 +20,7 @@ def create_driver(user_id: int, db: Session):
 def add_vehicle_to_db(vehicle: DriverVehicle, user_id: int, db: Session):
     db_vehicle = Vehicle(
         user_id=user_id,
-        licence_model=vehicle.licence_plate,
+        licence_plate=vehicle.licence_plate,
         model=vehicle.model,
     )
     try:
