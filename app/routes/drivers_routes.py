@@ -15,3 +15,46 @@ def add_vehicle(vehicle: DriverVehicle, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=404, detail="The user doesn't exist")
     return add_vehicle_to_db(vehicle, db_user.user_id, db)
+
+
+@router.get("/{useremail}", response_model=DriverProfile, status_code=status.HTTP_200_OK)
+def get_user(useremail: str, db: Session = Depends(get_db)):
+    user_db = get_user_by_email(useremail, db)
+    if not user_db:
+        raise HTTPException(
+            status_code=404, detail="The user doesn't exist")
+    driver_db = get_driver_profile(user_db.user_id, db)
+    if not driver_db:
+        raise HTTPException(
+            status_code=404, detail="The driver doesn't exist")
+    vehicle_db = get_driver_vehicle(user_db.user_id, db)
+    profile = {
+        "username": user_db.username,
+        "surname": user_db.surname,
+        "ratings": driver_db.ratings,
+        "licence_plate": vehicle_db.licence_plate,
+        "model": vehicle_db.model
+    }
+    return profile
+
+
+@router.get("/me/{useremail}", response_model=DriverSelfProfile, status_code=status.HTTP_200_OK)
+def get_user(useremail: str, db: Session = Depends(get_db)):
+    user_db = get_user_by_email(useremail, db)
+    if not user_db:
+        raise HTTPException(
+            status_code=404, detail="The user doesn't exist")
+    driver_db = get_driver_profile(user_db.user_id, db)
+    if not driver_db:
+        raise HTTPException(
+            status_code=404, detail="The driver doesn't exist")
+    vehicle_db = get_driver_vehicle(user_db.user_id, db)
+    profile = {
+        "email": useremail,
+        "username": user_db.username,
+        "surname": user_db.surname,
+        "ratings": driver_db.ratings,
+        "licence_plate": vehicle_db.licence_plate,
+        "model": vehicle_db.model
+    }
+    return profile
