@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import List
 from app.helpers.user_helpers import hash_password
 
@@ -11,8 +10,8 @@ from app.database import get_db
 router = APIRouter()
 
 
-@router.post("/grantaccess", response_model=UserSchema, status_code=status.HTTP_201_CREATED)
-def should_grant_access(user: UserSignInSchema, db: Session = Depends(get_db)):
+@router.post("/grantaccess", response_model=UserSchema, status_code=status.HTTP_200_OK)
+def grant_access(user: UserSignInSchema, db: Session = Depends(get_db)):
     user_db = get_user_by_email(user.email, db)
     if not user_db:
         raise HTTPException(
