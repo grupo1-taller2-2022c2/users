@@ -7,14 +7,6 @@ from fastapi import HTTPException
 from app.helpers.user_helpers import hash_password
 
 
-def fake_decode_token(token, db):
-    # This doesn't provide any security at all
-    # Check the next version
-    # el token es el usuario, por eso lo trae...
-    user = get_user_by_email(token, db)
-    return user
-
-
 def get_user_by_email(user_email: EmailStr, db: Session):
     return db.query(users_models.User).filter(users_models.User.email == user_email).first()
 
@@ -47,3 +39,13 @@ def register_user(user: user_schemas.UserSignUpSchema, db: Session):
 def get_users_from_db(db: Session):
     users = db.query(users_models.User).all()
     return users
+
+
+def block_user(user_db: users_models.User, db: Session):
+    user_db.blocked = True
+    db.commit()
+
+
+def unblock_user(user_db: users_models.User, db: Session):
+    user_db.blocked = False
+    db.commit()
