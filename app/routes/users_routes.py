@@ -19,7 +19,7 @@ def grant_access(user: UserSignInSchema, db: Session = Depends(get_db)):
             status_code=403, detail="Incorrect username or password")
     if user_db.blocked:
         raise HTTPException(
-            status_code=403, detail="The user has been blocked by the admin")
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="User blocked by admin")
     hashed_password = hash_password(user.password)
     users_cruds.validate_user(user.email, hashed_password, db)
     return users_cruds.user_schemas.UserSchema.from_orm(user_db)
@@ -36,6 +36,15 @@ def user_signup(user: UserSignUpSchema, db: Session = Depends(get_db)):
 @router.get("/", response_model=List[UserSchema], status_code=status.HTTP_200_OK)
 def get_users(db: Session = Depends(get_db)):
     return users_cruds.get_users_from_db(db)
+
+
+@router.get("/blocked/{user_email}", response_model=UserIsBlocked, status_code=status.HTTP_200_OK)
+def is_block_user(user_email: EmailStr, db: Session = Depends(get_db)):
+    user_db = users_cruds.get_user_by_email(user_email, db)
+    if not user_db:
+        raise HTTPException(
+            status_code=403, detail="Incorrect username or password")
+    return {'is_blocked': user_db.blocked}
 
 
 @router.post("/blocked/{user_email}", status_code=status.HTTP_200_OK)

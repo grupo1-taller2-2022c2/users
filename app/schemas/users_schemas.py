@@ -28,3 +28,7 @@ class UserSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserIsBlocked(BaseModel):
+    is_blocked: bool
