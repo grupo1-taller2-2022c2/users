@@ -9,6 +9,7 @@ def create_driver(user_id: int, db: Session):
     db_driver = Driver(
         user_id=user_id,
         ratings=5,
+        state="free"
     )
     try:
         db.add(db_driver)
@@ -41,5 +42,13 @@ def get_driver_vehicle(user_id: int, db: Session):
     try:
         db_driver = db.query(drivers_models.Vehicle).filter(drivers_models.Vehicle.user_id == user_id).first()
         return db_driver
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def lookup_db_drivers(db: Session):
+    try:
+        q = db.query(Driver).join(Vehicle, Driver.user_id == Vehicle.user_id).filter_by(state="free").all()
+        return q
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")

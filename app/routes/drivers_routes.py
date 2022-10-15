@@ -58,3 +58,9 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "model": vehicle_db.model
     }
     return profile
+
+
+@router.get("/lookup_drivers", status_code=status.HTTP_200_OK)
+def lookup_drivers(db: Session = Depends(get_db)):
+    return lookup_db_drivers(db)
+
