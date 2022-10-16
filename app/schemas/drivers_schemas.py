@@ -15,6 +15,13 @@ class DriverProfile(BaseModel):
     model: str
 
 
+class DriverAvailability(BaseModel):
+    email: EmailStr
+    ratings: float
+    licence_plate: str
+    model: str
+
+
 class DriverSelfProfile(BaseModel):
     email: str
     username: str

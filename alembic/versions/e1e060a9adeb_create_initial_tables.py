@@ -28,6 +28,7 @@ def upgrade() -> None:
                     sa.Column('user_id', sa.Integer(),
                               autoincrement=True, nullable=False),
                     sa.Column('ratings', sa.Integer(), nullable=False),
+                    sa.Column('state', sa.String(), nullable=False),
                     sa.PrimaryKeyConstraint('user_id')
                     )
     op.create_table('passengers',

@@ -6,6 +6,7 @@ class Driver(Base):
     __tablename__ = 'drivers'
     user_id = Column(Integer, autoincrement=True, primary_key=True)
     ratings = Column(Integer, nullable=False)
+    state = Column(String[50], nullable=False)
 
 
 class Vehicle(Base):

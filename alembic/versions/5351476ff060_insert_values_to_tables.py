@@ -50,8 +50,8 @@ def upgrade() -> None:
 
     op.bulk_insert(drivers_models.Driver.__table__,
                    [
-                       {'user_id': 2, 'ratings': 4},
-                       {'user_id': 5, 'ratings': 3}])
+                       {'user_id': 2, 'ratings': 4, 'state': 'free'},
+                       {'user_id': 5, 'ratings': 3, 'state': 'free'}])
 
     op.bulk_insert(drivers_models.Vehicle.__table__,
                    [

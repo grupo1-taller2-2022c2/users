@@ -49,3 +49,7 @@ def block_user(user_db: users_models.User, db: Session):
 def unblock_user(user_db: users_models.User, db: Session):
     user_db.blocked = False
     db.commit()
+
+
+def get_email_by_id(user_id: int, db: Session):
+    return db.query(users_models.User).filter(users_models.User.user_id == user_id).first()
