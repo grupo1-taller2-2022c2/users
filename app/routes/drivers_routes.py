@@ -18,6 +18,21 @@ def add_vehicle(vehicle: DriverVehicle, db: Session = Depends(get_db)):
     return add_vehicle_to_db(vehicle, db_user.user_id, db)
 
 
+@router.get("/all_available", response_model=List[DriverAvailability], status_code=status.HTTP_200_OK)
+def no_hago_nada(db: Session = Depends(get_db)):
+    db_drivers = get_available_drivers(db)
+    response = []
+    for driver in db_drivers:
+        user_id = driver.user_id
+        db_vehicle = get_driver_vehicle(user_id, db)
+        email = get_email_by_id(user_id, db)
+        response.append({"email": email,
+                         "ratings": driver.ratings,
+                         "licence_plate": db_vehicle.licence_plate,
+                         "model": db_vehicle.model})
+    return response
+
+
 @router.get("/{useremail}", response_model=DriverProfile, status_code=status.HTTP_200_OK)
 def get_user(useremail: str, db: Session = Depends(get_db)):
     user_db = get_user_by_email(useremail, db)
@@ -59,19 +74,3 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "model": vehicle_db.model
     }
     return profile
-
-
-@router.get("/lookup", status_code=status.HTTP_200_OK)
-def look_for_available_drivers(db: Session = Depends(get_db)):
-    """db_drivers = get_available_drivers(db)
-    response = []
-    for driver in db_drivers:
-        user_id = driver.user_id
-        db_vehicle = get_driver_vehicle(user_id, db)
-        email = get_email_by_id(user_id, db)
-        response.append({"email": email,
-                         "ratings": driver.ratings,
-                         "licence_plate": db_vehicle.licence_plate,
-                         "model": db_vehicle.model})
-    return response"""
-    return "todo ok"

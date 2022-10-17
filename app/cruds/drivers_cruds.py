@@ -59,6 +59,6 @@ def get_available_drivers(db: Session):
         q = db.query(drivers_models.Driver).filter(drivers_models.Driver.state == "free").all()
         if not q:
             return []
-        return q
+        return list(q)
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
