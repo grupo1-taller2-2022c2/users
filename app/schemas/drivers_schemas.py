@@ -17,6 +17,8 @@ class DriverProfile(BaseModel):
 
 class DriverAvailability(BaseModel):
     email: str
+    username: str
+    surname: str
     ratings: float
     licence_plate: str
     model: str

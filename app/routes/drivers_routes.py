@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
-from app.cruds.users_cruds import get_user_by_email, get_email_by_id
+from app.cruds.users_cruds import get_user_by_email, get_data_by_id
 from app.cruds.drivers_cruds import *
 from app.schemas.drivers_schemas import *
 from app.database import get_db
@@ -25,8 +25,10 @@ def available_drivers(db: Session = Depends(get_db)):
     for driver in db_drivers:
         user_id = driver.user_id
         db_vehicle = get_driver_vehicle(user_id, db)
-        email = get_email_by_id(user_id, db)
+        email, username, surname = get_data_by_id(user_id, db)
         response.append({"email": email,
+                         "username": username,
+                         "surname": surname,
                          "ratings": driver.ratings,
                          "licence_plate": db_vehicle.licence_plate,
                          "model": db_vehicle.model})
