@@ -76,3 +76,12 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "model": vehicle_db.model
     }
     return profile
+
+
+@router.patch("/update/{useremail}", status_code=status.HTTP_200_OK)
+def update_driiver_profile(useremail: str, user: DriverProfile, db: Session = Depends(get_db)):
+    user_db = get_user_by_email(useremail, db)
+    if not user_db:
+        raise HTTPException(
+            status_code=404, detail="The user doesn't exist")
+    return update_driiver_profile_db(user, user_db, db)

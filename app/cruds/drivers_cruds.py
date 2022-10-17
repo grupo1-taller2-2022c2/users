@@ -1,6 +1,7 @@
 from app.models.drivers_models import Driver, Vehicle
-from app.schemas.drivers_schemas import DriverVehicle
+from app.schemas.drivers_schemas import DriverVehicle, DriverProfile
 import app.models.drivers_models as drivers_models
+from app.cruds.users_cruds import get_user_by_id
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
@@ -46,19 +47,46 @@ def get_driver_vehicle(user_id: int, db: Session):
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-def lookup_db_drivers(db: Session):
-    try:
-        q = db.query(Driver).join(Vehicle, Driver.user_id == Vehicle.user_id).filter_by(state="free").all()
-        return q
-    except Exception as _:
-        raise HTTPException(status_code=500, detail="Internal server error")
-
-
 def get_available_drivers(db: Session):
     try:
         q = db.query(drivers_models.Driver).filter(drivers_models.Driver.state == "free").all()
         if not q:
             return []
         return list(q)
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def update_driiver_profile_db(new_profile: DriverProfile, user_db, db: Session):
+    old_driver = get_driver_profile(user_db.user_id, db)
+
+    if not old_driver:
+        raise HTTPException(status_code=404, detail="The driver doesn't exist")
+
+    old_vehicle = get_driver_vehicle(user_db.user_id, db)
+    if not old_vehicle:
+        db_vehicle = Vehicle(
+            user_id=user_db.user_id,
+            licence_plate=new_profile.licence_plate,
+            model=new_profile.model,
+        )
+        try:
+            db.add(db_vehicle)
+            db.commit()
+            db.refresh(db_vehicle)
+        except Exception:
+            raise HTTPException(status_code=500, detail="Internal server error")
+
+    try:
+        if new_profile.username is not None:
+            user_db.username = new_profile.username
+        if new_profile.surname is not None:
+            user_db.surname = new_profile.surname
+        if new_profile.licence_plate is not None:
+            old_vehicle.licence_plate = new_profile.licence_plate
+        if new_profile.model is not None:
+            old_vehicle.model = new_profile.model
+        db.commit()
+        return
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
