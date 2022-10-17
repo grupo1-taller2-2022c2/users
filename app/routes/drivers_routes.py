@@ -19,7 +19,7 @@ def add_vehicle(vehicle: DriverVehicle, db: Session = Depends(get_db)):
 
 
 @router.get("/all_available", response_model=List[DriverAvailability], status_code=status.HTTP_200_OK)
-def get_available_drivers(db: Session = Depends(get_db)):
+def available_drivers(db: Session = Depends(get_db)):
     db_drivers = get_available_drivers(db)
     response = []
     for driver in db_drivers:
