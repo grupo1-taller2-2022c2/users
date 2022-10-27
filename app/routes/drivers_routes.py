@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File
 from starlette import status
 from app.cruds.users_cruds import get_user_by_email, get_data_by_id
 from app.cruds.drivers_cruds import *
@@ -78,7 +78,7 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
     return profile
 
 
-@router.patch("/update/{useremail}", status_code=status.HTTP_200_OK)
+@router.patch("/{useremail}", status_code=status.HTTP_200_OK)
 def update_driiver_profile(useremail: str, user: DriverProfile, db: Session = Depends(get_db)):
     user_db = get_user_by_email(useremail, db)
     if not user_db:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File
 
 from starlette import status
 
@@ -50,10 +50,15 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
     return profile
 
 
-@router.patch("/update/{useremail}", status_code=status.HTTP_200_OK)
+@router.patch("/{useremail}", status_code=status.HTTP_200_OK)
 def update_passenger_profile(useremail: str, user: PassengerProfile, db: Session = Depends(get_db)):
     user_db = get_user_by_email(useremail, db)
     if not user_db:
         raise HTTPException(
             status_code=404, detail="The user doesn't exist")
     return update_passenger_profile_db(user, user_db, db)
+
+
+@router.patch("/picture/{useremail}", status_code=status.HTTP_200_OK)
+def update_passenger_picture(useremail: str, photo: bytes = File(default=None)):
+    return
