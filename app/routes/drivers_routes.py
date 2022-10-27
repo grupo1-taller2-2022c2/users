@@ -85,3 +85,8 @@ def update_driiver_profile(useremail: str, user: DriverProfile, db: Session = De
         raise HTTPException(
             status_code=404, detail="The user doesn't exist")
     return update_driiver_profile_db(user, user_db, db)
+
+
+@router.patch("/picture/{useremail}", status_code=status.HTTP_200_OK)
+def update_passenger_picture(useremail: str, photo: bytes = File(default=None)):
+    return
