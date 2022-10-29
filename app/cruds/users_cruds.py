@@ -52,9 +52,14 @@ def unblock_user(user_db: users_models.User, db: Session):
 
 
 def get_data_by_id(user_id: int, db: Session):
-    user_db = db.query(users_models.User).filter(users_models.User.user_id == user_id).first()
+    user_db = db.query(users_models.User).filter(
+        users_models.User.user_id == user_id).first()
     return user_db.email, user_db.username, user_db.surname
 
 
 def get_user_by_id(user_id: int, db: Session):
     return db.query(users_models.User).filter(users_models.User.user_id == user_id).first()
+
+
+def get_blocked_users_count(db: Session):
+    return db.query(users_models.User).filter(users_models.User.blocked == True).count()

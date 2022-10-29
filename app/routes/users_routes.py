@@ -38,6 +38,11 @@ def get_users(db: Session = Depends(get_db)):
     return users_cruds.get_users_from_db(db)
 
 
+@router.get("/blocked", status_code=status.HTTP_200_OK)
+def get_blocked_users_count(db: Session = Depends(get_db)):
+    return users_cruds.get_blocked_users_count(db)
+
+
 @router.get("/blocked/{user_email}", response_model=UserIsBlocked, status_code=status.HTTP_200_OK)
 def is_block_user(user_email: EmailStr, db: Session = Depends(get_db)):
     user_db = users_cruds.get_user_by_email(user_email, db)
