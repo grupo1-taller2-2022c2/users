@@ -41,7 +41,8 @@ def get_driver_profile(user_id: int, db: Session):
 
 def get_driver_vehicle(user_id: int, db: Session):
     try:
-        db_driver = db.query(drivers_models.Vehicle).filter(drivers_models.Vehicle.user_id == user_id).first()
+        db_driver = db.query(drivers_models.Vehicle).filter(
+            drivers_models.Vehicle.user_id == user_id).first()
         return db_driver
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -49,7 +50,8 @@ def get_driver_vehicle(user_id: int, db: Session):
 
 def get_available_drivers(db: Session):
     try:
-        q = db.query(drivers_models.Driver).filter(drivers_models.Driver.state == "free").all()
+        q = db.query(drivers_models.Driver).filter(
+            drivers_models.Driver.state == "free").all()
         if not q:
             return []
         return list(q)
@@ -75,7 +77,8 @@ def update_driiver_profile_db(new_profile: DriverProfile, user_db, db: Session):
             db.commit()
             db.refresh(db_vehicle)
         except Exception:
-            raise HTTPException(status_code=500, detail="Internal server error")
+            raise HTTPException(
+                status_code=500, detail="Internal server error")
 
     try:
         if new_profile.username is not None:

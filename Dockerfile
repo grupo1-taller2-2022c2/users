@@ -15,4 +15,4 @@ RUN apt-get -y install \
   gcc \
   && apt-get clean
 
-RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2 uvicorn alembic pydantic[email] python-multipart
+RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2 uvicorn alembic pydantic[email] python-multipart requests

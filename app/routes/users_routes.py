@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from typing import List
-from app.helpers.user_helpers import hash_password
+from app.helpers.user_helpers import hash_password, send_login_notification_to_backoffice
 from fastapi import HTTPException
 from starlette import status
 from app.cruds import users_cruds
@@ -22,6 +22,10 @@ def grant_access(user: UserSignInSchema, db: Session = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED, detail="User blocked by admin")
     hashed_password = hash_password(user.password)
     users_cruds.validate_user(user.email, hashed_password, db)
+
+    # TODO: poner mailpassword o federatedidentity segun sea
+    send_login_notification_to_backoffice("mailpassword")
+
     return users_cruds.user_schemas.UserSchema.from_orm(user_db)
 
 

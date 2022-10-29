@@ -4,7 +4,7 @@ from app.cruds.passengers_cruds import create_passenger
 from pydantic import EmailStr
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.helpers.user_helpers import hash_password
+from app.helpers.user_helpers import hash_password, send_reg_notification_to_backoffice
 
 
 def get_user_by_email(user_email: EmailStr, db: Session):
@@ -31,6 +31,9 @@ def register_user(user: user_schemas.UserSignUpSchema, db: Session):
         db.commit()
         db.refresh(db_user)
         create_passenger(db_user.user_id, db)
+        # TODO: poner mailpassword o federatedidentity segun sea
+        send_reg_notification_to_backoffice("mailpassword")
+
         return user_schemas.UserSchema.from_orm(db_user)
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
