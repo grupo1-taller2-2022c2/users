@@ -1,11 +1,11 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Float
 from app.models import Base
 
 
 class Driver(Base):
     __tablename__ = 'drivers'
     user_id = Column(Integer, autoincrement=True, primary_key=True)
-    ratings = Column(Integer, nullable=False)
+    ratings = Column(Float, nullable=False)
     state = Column(String[50], nullable=False)
 
 
@@ -14,3 +14,12 @@ class Vehicle(Base):
     user_id = Column(Integer, autoincrement=True, primary_key=True)
     licence_plate = Column(String[50], nullable=False)
     model = Column(String[50], nullable=False)
+
+
+class DriverRating(Base):
+    __tablename__ = 'driver_ratings'
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    email = Column(String(50), nullable=False)
+    trip_id = Column(Integer, nullable=False)
+    ratings = Column(Integer, nullable=False)
+    message = Column(String(50), nullable=False)

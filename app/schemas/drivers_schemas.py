@@ -31,3 +31,10 @@ class DriverSelfProfile(BaseModel):
     ratings: float
     licence_plate: str
     model: str
+
+
+class DriverRating(BaseModel):
+    driver_email: str
+    trip_id: int
+    ratings: int
+    message: str

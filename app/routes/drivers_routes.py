@@ -46,10 +46,11 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=404, detail="The driver doesn't exist")
     vehicle_db = get_driver_vehicle(user_db.user_id, db)
+    ratings = get_driver_average_ratings(useremail, db)
     profile = {
         "username": user_db.username,
         "surname": user_db.surname,
-        "ratings": driver_db.ratings,
+        "ratings": ratings,
         "licence_plate": vehicle_db.licence_plate,
         "model": vehicle_db.model
     }
@@ -67,11 +68,12 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=404, detail="The driver doesn't exist")
     vehicle_db = get_driver_vehicle(user_db.user_id, db)
+    ratings = get_driver_average_ratings(useremail, db)
     profile = {
         "email": useremail,
         "username": user_db.username,
         "surname": user_db.surname,
-        "ratings": driver_db.ratings,
+        "ratings": ratings,
         "licence_plate": vehicle_db.licence_plate,
         "model": vehicle_db.model
     }
@@ -90,3 +92,27 @@ def update_driiver_profile(useremail: str, user: DriverProfile, db: Session = De
 @router.patch("/picture/{useremail}", status_code=status.HTTP_200_OK)
 def update_passenger_picture(useremail: str, photo: bytes = File(default=None)):
     return
+
+
+@router.post("/ratings", status_code=status.HTTP_201_CREATED)
+def user_add_driver_ratings(rating: DriverRating, db: Session = Depends(get_db)):
+    """Add a rating to the driver"""
+    db_user = get_user_by_email(rating.driver_email, db)
+    if not db_user:
+        raise HTTPException(
+            status_code=404, detail="The user doesn't exist")
+    return add_driver_rating(rating.driver_email, rating.trip_id, rating.ratings, rating.message, db)
+
+
+@router.get("/ratings/all/{useremail}", status_code=status.HTTP_200_OK)
+def user_get_driver_ratings(useremail: str, db: Session = Depends(get_db)):
+    db_user = get_user_by_email(useremail, db)
+    if not db_user:
+        raise HTTPException(
+            status_code=404, detail="The user doesn't exist")
+    return get_all_driver_ratings(useremail, db)
+
+
+@router.get("/ratings/{ratings_id}", status_code=status.HTTP_200_OK)
+def user_get_driver_rating(ratings_id: int, db: Session = Depends(get_db)):
+    return get_driver_ratings(ratings_id, db)

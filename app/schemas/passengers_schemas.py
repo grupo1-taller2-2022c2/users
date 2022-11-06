@@ -18,3 +18,10 @@ class PassengerSelfProfile(BaseModel):
     username: str
     surname: str
     ratings: float
+
+
+class PassengerRating(BaseModel):
+    passenger_email: str
+    trip_id: int
+    ratings: int
+    message: str

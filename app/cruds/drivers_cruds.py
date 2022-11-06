@@ -1,4 +1,4 @@
-from app.models.drivers_models import Driver, Vehicle
+from app.models.drivers_models import Driver, Vehicle, DriverRating
 from app.schemas.drivers_schemas import DriverVehicle, DriverProfile
 import app.models.drivers_models as drivers_models
 from app.cruds.users_cruds import get_user_by_id
@@ -93,3 +93,43 @@ def update_driiver_profile_db(new_profile: DriverProfile, user_db, db: Session):
         return
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def add_driver_rating(email, trip_id, rating, message, db: Session):
+    db_rating = DriverRating(
+        email=email,
+        trip_id=trip_id,
+        ratings=rating,
+        message=message
+    )
+    try:
+        db.add(db_rating)
+        db.commit()
+        db.refresh(db_rating)
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def get_driver_average_ratings(email, db: Session):
+    try:
+        ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
+        sum = 0
+        for rating in ratings:
+            sum += rating.ratings
+        if len(ratings) == 0:
+            return 5
+        return sum / len(ratings)
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def get_all_driver_ratings(email, db: Session):
+    try:
+        ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
+        return ratings
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def get_driver_ratings(ratings_id, db: Session):
+    return db.query(DriverRating).filter(DriverRating.id == ratings_id).first()
