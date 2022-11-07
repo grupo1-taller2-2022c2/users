@@ -1,5 +1,5 @@
-from app.models.drivers_models import Driver, Vehicle, DriverRating
-from app.schemas.drivers_schemas import DriverVehicle, DriverProfile
+from app.models.drivers_models import Driver, Vehicle, DriverRating, DriverReportModel
+from app.schemas.drivers_schemas import DriverVehicle, DriverProfile, DriverReport
 import app.models.drivers_models as drivers_models
 from app.cruds.users_cruds import get_user_by_id
 from sqlalchemy.orm import Session
@@ -133,3 +133,33 @@ def get_all_driver_ratings(email, db: Session):
 
 def get_driver_ratings(ratings_id, db: Session):
     return db.query(DriverRating).filter(DriverRating.id == ratings_id).first()
+
+
+def add_report(report: DriverReport, db: Session):
+    db_report = DriverReportModel(
+        driver_email=report.driver_email,
+        passenger_email=report.passenger_email,
+        reason=report.reason
+    )
+    try:
+        db.add(db_report)
+        db.commit()
+        db.refresh(db_report)
+        return db_report
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def get_all_reports(db: Session):
+    return db.query(DriverReportModel).all()
+
+
+def delete_report(report_id: int, db: Session):
+    try:
+        db_report = db.query(DriverReportModel).filter(DriverReportModel.id == report_id).first()
+        db.delete(db_report)
+        db.commit()
+        return
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Internal server error")

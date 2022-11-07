@@ -116,3 +116,22 @@ def user_get_driver_ratings(useremail: str, db: Session = Depends(get_db)):
 @router.get("/ratings/{ratings_id}", status_code=status.HTTP_200_OK)
 def user_get_driver_rating(ratings_id: int, db: Session = Depends(get_db)):
     return get_driver_ratings(ratings_id, db)
+
+
+@router.post("/reports", status_code=status.HTTP_201_CREATED)
+def report_driver(report: DriverReport, db: Session = Depends(get_db)):
+    db_passenger = get_user_by_email(report.passenger_email, db)
+    if not db_passenger:
+        raise HTTPException(
+            status_code=404, detail="The passenger doesn't exist")
+    return add_report(report, db)
+
+
+@router.delete("/reports", status_code=status.HTTP_200_OK)
+def delete_report_with_report_id(report: ReportDelete, db: Session = Depends(get_db)):
+    return delete_report(report.report_id, db)
+
+
+@router.get("/reports/all", status_code=status.HTTP_200_OK)
+def get_drivers_reports(db: Session = Depends(get_db)):
+    return get_all_reports(db)

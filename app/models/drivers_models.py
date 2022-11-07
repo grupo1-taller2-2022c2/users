@@ -23,3 +23,11 @@ class DriverRating(Base):
     trip_id = Column(Integer, nullable=False)
     ratings = Column(Integer, nullable=False)
     message = Column(String(50), nullable=False)
+
+
+class DriverReportModel(Base):
+    __tablename__ = 'driver_reports'
+    id = Column(Integer, autoincrement=True, primary_key=True)
+    driver_email = Column(String(50), nullable=False)
+    passenger_email = Column(String(50), nullable=False)
+    reason = Column(String(150), nullable=False)
