@@ -32,3 +32,8 @@ class UserSchema(BaseModel):
 
 class UserIsBlocked(BaseModel):
     is_blocked: bool
+
+
+class WalletWithdrawalSchema(BaseModel):
+    user_external_wallet_address: str
+    amount_in_ethers: str

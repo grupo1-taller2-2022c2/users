@@ -51,3 +51,14 @@ def get_wallet_info(user_id):
         return response.json()
     raise HTTPException(status_code=response.status_code,
                         detail=response.json())
+
+
+def withdraw_funds_from_user_wallet(user_id, withdrawal_info):
+    url = wallets_base_url + "/wallets/" + str(user_id) + "/withdrawals"
+    body = {'user_external_wallet_address': withdrawal_info.user_external_wallet_address,
+            'amount_in_ethers': withdrawal_info.amount_in_ethers}
+    response = requests.post(url=url, json=body)
+    if response.ok:
+        return response.json()
+    raise HTTPException(status_code=response.status_code,
+                        detail=response.json())
