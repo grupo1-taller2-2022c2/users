@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from typing import List
-from app.helpers.user_helpers import hash_password, send_login_notification_to_backoffice
+from app.helpers.user_helpers import create_wallet_for_new_user, get_wallet_info, hash_password, send_login_notification_to_backoffice
 from fastapi import HTTPException
 from starlette import status
 from app.cruds import users_cruds
@@ -34,7 +34,9 @@ def user_signup(user: UserSignUpSchema, db: Session = Depends(get_db)):
     user_db = users_cruds.get_user_by_email(user.email, db)
     if user_db:
         raise HTTPException(status_code=409, detail="The user already exists")
-    return users_cruds.register_user(user, db)
+    created_user, user_id = users_cruds.register_user(user, db)
+    create_wallet_for_new_user(user_id)
+    return created_user
 
 
 @router.get("/", response_model=List[UserSchema], status_code=status.HTTP_200_OK)
@@ -80,3 +82,16 @@ def unblock_user(user_email: EmailStr, db: Session = Depends(get_db)):
             status_code=403, detail="The user is already unblocked")
     users_cruds.unblock_user(user_db, db)
     return "User unblocked"
+
+
+@router.get("/{user_email}/wallet", status_code=status.HTTP_200_OK)
+def get_user_wallet(user_email: EmailStr, db: Session = Depends(get_db)):
+    user_db = users_cruds.get_user_by_email(user_email, db)
+    if not user_db:
+        raise HTTPException(
+            status_code=403, detail="Incorrect username")
+    if user_db.blocked:
+        raise HTTPException(
+            status_code=403, detail="The user is already blocked")
+
+    return get_wallet_info(user_db.user_id)

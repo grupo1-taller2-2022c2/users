@@ -1,9 +1,11 @@
 import hashlib
+import json
 import os
 import requests
 from fastapi import HTTPException
 
-url_base = os.getenv('BACKOFFICE_BASE_URL')
+backoffice_base_url = os.getenv('BACKOFFICE_BASE_URL')
+wallets_base_url = os.getenv('WALLETS_BASE_URL')
 
 
 def hash_password(password):
@@ -11,7 +13,7 @@ def hash_password(password):
 
 
 def send_reg_notification_to_backoffice(reg_method):
-    url = url_base + "/metrics/registrations?method=" + reg_method
+    url = backoffice_base_url + "/metrics/registrations?method=" + reg_method
     response = requests.post(url=url)
 
     if response.ok:
@@ -21,10 +23,31 @@ def send_reg_notification_to_backoffice(reg_method):
 
 
 def send_login_notification_to_backoffice(reg_method):
-    url = url_base + "/metrics/logins?method=" + reg_method
+    url = backoffice_base_url + "/metrics/logins?method=" + reg_method
     response = requests.post(url=url)
 
     if response.ok:
         return response.json()
     raise HTTPException(status_code=response.status_code,
                         detail=response.json()['detail'])
+
+
+def create_wallet_for_new_user(user_id):
+    url = wallets_base_url + "/wallets"
+    body = {'user_id': user_id}
+    response = requests.post(url=url, json=body)
+    print("Wallet created for new user: \n" + response.content)
+
+    if response.ok:
+        return 0
+    raise HTTPException(status_code=response.status_code,
+                        detail=response.json())
+
+
+def get_wallet_info(user_id):
+    url = wallets_base_url + "/wallets/" + str(user_id)
+    response = requests.get(url=url)
+    if response.ok:
+        return response.json()
+    raise HTTPException(status_code=response.status_code,
+                        detail=response.json())

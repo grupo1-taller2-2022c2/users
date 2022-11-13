@@ -34,7 +34,7 @@ def register_user(user: user_schemas.UserSignUpSchema, db: Session):
         # TODO: poner mailpassword o federatedidentity segun sea
         send_reg_notification_to_backoffice("mailpassword")
 
-        return user_schemas.UserSchema.from_orm(db_user)
+        return user_schemas.UserSchema.from_orm(db_user), db_user.user_id
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
 
