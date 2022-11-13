@@ -31,3 +31,4 @@ class DriverReportModel(Base):
     driver_email = Column(String(50), nullable=False)
     passenger_email = Column(String(50), nullable=False)
     reason = Column(String(150), nullable=False)
+    trip_id = Column(Integer, nullable=False)

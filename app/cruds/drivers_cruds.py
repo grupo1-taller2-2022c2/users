@@ -139,7 +139,8 @@ def add_report(report: DriverReport, db: Session):
     db_report = DriverReportModel(
         driver_email=report.driver_email,
         passenger_email=report.passenger_email,
-        reason=report.reason
+        reason=report.reason,
+        trip_id=report.trip_id
     )
     try:
         db.add(db_report)
