@@ -36,12 +36,11 @@ def create_wallet_for_new_user(user_id):
     url = wallets_base_url + "/wallets"
     body = {'user_id': user_id}
     response = requests.post(url=url, json=body)
-    print("Wallet created for new user: \n" + response.content)
-
     if response.ok:
+        print("Wallet created for new user: \n" + response.text)
         return 0
     raise HTTPException(status_code=response.status_code,
-                        detail=response.json())
+                        detail=response.text)
 
 
 def get_wallet_info(user_id):
@@ -50,7 +49,7 @@ def get_wallet_info(user_id):
     if response.ok:
         return response.json()
     raise HTTPException(status_code=response.status_code,
-                        detail=response.json())
+                        detail=response.text)
 
 
 def withdraw_funds_from_user_wallet(user_id, withdrawal_info):
@@ -61,4 +60,4 @@ def withdraw_funds_from_user_wallet(user_id, withdrawal_info):
     if response.ok:
         return response.json()
     raise HTTPException(status_code=response.status_code,
-                        detail=response.json())
+                        detail=response.text)
