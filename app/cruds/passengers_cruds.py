@@ -34,7 +34,8 @@ def add_pred_address(address: PassengerAddress, user_id: int, db: Session):
 
 def get_passenger_profile(user_id: int, db: Session):
     try:
-        db_passenger = db.query(passengers_models.Passenger).filter(passengers_models.Passenger.user_id == user_id).first()
+        db_passenger = db.query(passengers_models.Passenger).filter(
+            passengers_models.Passenger.user_id == user_id).first()
         return db_passenger
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -42,7 +43,8 @@ def get_passenger_profile(user_id: int, db: Session):
 
 def get_passenger_average_ratings(email, db: Session):
     try:
-        ratings = db.query(PassengerRating).filter(PassengerRating.email == email).all()
+        ratings = db.query(PassengerRating).filter(
+            PassengerRating.email == email).all()
         sum = 0
         for rating in ratings:
             sum += rating.ratings
@@ -55,7 +57,8 @@ def get_passenger_average_ratings(email, db: Session):
 
 def get_all_passenger_ratings(email, db: Session):
     try:
-        ratings = db.query(PassengerRating).filter(PassengerRating.email == email).all()
+        ratings = db.query(PassengerRating).filter(
+            PassengerRating.email == email).all()
         return ratings
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -90,3 +93,13 @@ def add_passenger_rating(email, trip_id, rating, message, db: Session):
 
 def get_passenger_ratings(ratings_id, db: Session):
     return db.query(PassengerRating).filter(PassengerRating.id == ratings_id).first()
+
+
+def delete_added_passengers(db: Session):
+    try:
+        db.query(Passenger).filter(Passenger.user_id >= 6).delete()
+        db.query(Address).filter(Address.user_id >= 6).delete()
+        db.query(PassengerRating).delete()
+        db.commit()
+    except Exception as _:
+        raise HTTPException(status_code=500, detail="Internal server error")

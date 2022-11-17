@@ -112,7 +112,8 @@ def add_driver_rating(email, trip_id, rating, message, db: Session):
 
 def get_driver_average_ratings(email, db: Session):
     try:
-        ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
+        ratings = db.query(DriverRating).filter(
+            DriverRating.email == email).all()
         sum = 0
         for rating in ratings:
             sum += rating.ratings
@@ -125,7 +126,8 @@ def get_driver_average_ratings(email, db: Session):
 
 def get_all_driver_ratings(email, db: Session):
     try:
-        ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
+        ratings = db.query(DriverRating).filter(
+            DriverRating.email == email).all()
         return ratings
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -157,10 +159,18 @@ def get_all_reports(db: Session):
 
 def delete_report(report_id: int, db: Session):
     try:
-        db_report = db.query(DriverReportModel).filter(DriverReportModel.id == report_id).first()
+        db_report = db.query(DriverReportModel).filter(
+            DriverReportModel.id == report_id).first()
         db.delete(db_report)
         db.commit()
         return
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+def delete_added_drivers(db: Session):
+    db.query(Driver).delete()
+    db.query(Vehicle).delete()
+    db.query(DriverRating).delete()
+    db.query(DriverReportModel).delete()

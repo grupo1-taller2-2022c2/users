@@ -66,3 +66,7 @@ def get_user_by_id(user_id: int, db: Session):
 
 def get_blocked_users_count(db: Session):
     return db.query(users_models.User).filter(users_models.User.blocked == True).count()
+
+
+def delete_added_users(db: Session):
+    return db.query(users_models.User).filter(users_models.User.user_id >= 6).delete()
