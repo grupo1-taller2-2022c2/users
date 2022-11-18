@@ -69,4 +69,10 @@ def get_blocked_users_count(db: Session):
 
 
 def delete_added_users(db: Session):
-    return db.query(users_models.User).filter(users_models.User.user_id >= 6).delete()
+    try:
+        db.query(users_models.User).filter(
+            users_models.User.user_id >= 6).delete()
+        db.commit()
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Could not delete users: " + e.__str__)

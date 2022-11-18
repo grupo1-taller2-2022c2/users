@@ -170,7 +170,12 @@ def delete_report(report_id: int, db: Session):
 
 
 def delete_added_drivers(db: Session):
-    db.query(Driver).delete()
-    db.query(Vehicle).delete()
-    db.query(DriverRating).delete()
-    db.query(DriverReportModel).delete()
+    try:
+        db.query(Driver).delete()
+        db.query(Vehicle).delete()
+        db.query(DriverRating).delete()
+        db.query(DriverReportModel).delete()
+        db.commit()
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Could not delete drivers and its info: " + e.__str__)

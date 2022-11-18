@@ -101,5 +101,6 @@ def delete_added_passengers(db: Session):
         db.query(Address).filter(Address.user_id >= 6).delete()
         db.query(PassengerRating).delete()
         db.commit()
-    except Exception as _:
-        raise HTTPException(status_code=500, detail="Internal server error")
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail="Could not delete passengers and its info: " + e.__str__)
