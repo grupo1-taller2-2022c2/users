@@ -1,8 +1,8 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8-slim
 
-COPY ./app /app/app
-COPY ./alembic /app/alembic
-COPY ./alembic.ini /app/
+COPY ./app /root/app
+COPY ./alembic /root/alembic
+COPY ./alembic.ini /root/
 
 RUN apt-get -y update
 
@@ -15,6 +15,8 @@ RUN apt-get -y install \
   gcc \
   && apt-get clean
 
-COPY ./requirements.txt /app/requirements.txt
+COPY ./requirements.txt /root/requirements.txt
+COPY ./tests /root/tests
+COPY ./run_tests.sh /root/
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
