@@ -27,4 +27,4 @@ jobs:
       - name: Print ls
         run: docker-compose -f docker-compose.test.yml exec -T users_backend bash -c ls
       - name: Run tests
-        run: docker-compose -f docker-compose.test.yml exec -T users_backend bash ./root/run_tests.sh
+        run: docker-compose -f docker-compose.test.yml exec -T users_backend bash ./run_tests.sh
