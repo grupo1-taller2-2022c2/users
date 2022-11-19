@@ -1,0 +1,38 @@
+version: "3.3"
+services:
+
+  users_backend:
+    build: .
+    container_name: users_container
+    stdin_open: true 
+    tty: true
+    entrypoint: ../start-reload.sh       
+    links:
+      - users_dev_db
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:grupo1@users_db_container:5432/postgres
+      - POSTGRES_PASSWORD=grupo1
+      - LOG_LEVEL=debug
+      - BACKOFFICE_BASE_URL=http://fake_backoffice:3000
+      - WALLETS_BASE_URL=http://fake_wallets:3000
+    depends_on:
+      - users_dev_db
+    networks:
+      - my_network
+
+  users_dev_db:
+    image: postgres
+    container_name: users_db_container
+    environment:
+      - POSTGRES_PASSWORD=grupo1
+    expose:
+      - 5432
+    ports:
+      - 6543:5432
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
