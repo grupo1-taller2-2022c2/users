@@ -15,4 +15,6 @@ RUN apt-get -y install \
   gcc \
   && apt-get clean
 
-RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2 uvicorn alembic pydantic[email] python-multipart requests
+COPY ./requirements.txt /app/requirements.txt
+
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
