@@ -19,4 +19,4 @@ COPY ./requirements.txt /root/requirements.txt
 COPY ./tests /root/tests
 COPY ./run_tests.sh /root/
 
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /root/requirements.txt
