@@ -36,13 +36,20 @@ def add_vehicle_to_db(vehicle: DriverVehicle, user_id: int, db: Session):
 
 
 def get_driver_profile(user_id: int, db: Session):
-    return db.query(drivers_models.Driver).filter(drivers_models.Driver.user_id == user_id).first()
+    return (
+        db.query(drivers_models.Driver)
+        .filter(drivers_models.Driver.user_id == user_id)
+        .first()
+    )
 
 
 def get_driver_vehicle(user_id: int, db: Session):
     try:
-        db_driver = db.query(drivers_models.Vehicle).filter(
-            drivers_models.Vehicle.user_id == user_id).first()
+        db_driver = (
+            db.query(drivers_models.Vehicle)
+            .filter(drivers_models.Vehicle.user_id == user_id)
+            .first()
+        )
         return db_driver
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -50,8 +57,11 @@ def get_driver_vehicle(user_id: int, db: Session):
 
 def get_available_drivers(db: Session):
     try:
-        q = db.query(drivers_models.Driver).filter(
-            drivers_models.Driver.state == "free").all()
+        q = (
+            db.query(drivers_models.Driver)
+            .filter(drivers_models.Driver.state == "free")
+            .all()
+        )
         if not q:
             return []
         return list(q)
@@ -77,8 +87,7 @@ def update_driiver_profile_db(new_profile: DriverProfile, user_db, db: Session):
             db.commit()
             db.refresh(db_vehicle)
         except Exception:
-            raise HTTPException(
-                status_code=500, detail="Internal server error")
+            raise HTTPException(status_code=500, detail="Internal server error")
 
     try:
         if new_profile.username is not None:
@@ -97,10 +106,7 @@ def update_driiver_profile_db(new_profile: DriverProfile, user_db, db: Session):
 
 def add_driver_rating(email, trip_id, rating, message, db: Session):
     db_rating = DriverRating(
-        email=email,
-        trip_id=trip_id,
-        ratings=rating,
-        message=message
+        email=email, trip_id=trip_id, ratings=rating, message=message
     )
     try:
         db.add(db_rating)
@@ -112,8 +118,7 @@ def add_driver_rating(email, trip_id, rating, message, db: Session):
 
 def get_driver_average_ratings(email, db: Session):
     try:
-        ratings = db.query(DriverRating).filter(
-            DriverRating.email == email).all()
+        ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
         sum = 0
         for rating in ratings:
             sum += rating.ratings
@@ -126,8 +131,7 @@ def get_driver_average_ratings(email, db: Session):
 
 def get_all_driver_ratings(email, db: Session):
     try:
-        ratings = db.query(DriverRating).filter(
-            DriverRating.email == email).all()
+        ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
         return ratings
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
@@ -142,7 +146,7 @@ def add_report(report: DriverReport, db: Session):
         driver_email=report.driver_email,
         passenger_email=report.passenger_email,
         reason=report.reason,
-        trip_id=report.trip_id
+        trip_id=report.trip_id,
     )
     try:
         db.add(db_report)
@@ -159,8 +163,11 @@ def get_all_reports(db: Session):
 
 def delete_report(report_id: int, db: Session):
     try:
-        db_report = db.query(DriverReportModel).filter(
-            DriverReportModel.id == report_id).first()
+        db_report = (
+            db.query(DriverReportModel)
+            .filter(DriverReportModel.id == report_id)
+            .first()
+        )
         db.delete(db_report)
         db.commit()
         return
@@ -178,4 +185,5 @@ def delete_added_drivers(db: Session):
         db.commit()
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail="Could not delete drivers and its info: " + e.__str__)
+            status_code=500, detail="Could not delete drivers and its info: " + str(e)
+        )

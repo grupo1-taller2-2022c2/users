@@ -20,3 +20,5 @@ COPY ./tests /app/tests
 COPY ./run_tests.sh /app/
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+CMD ["bash", "entrypoint.sh"]

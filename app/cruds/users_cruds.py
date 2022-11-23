@@ -8,14 +8,17 @@ from app.helpers.user_helpers import hash_password, send_reg_notification_to_bac
 
 
 def get_user_by_email(user_email: EmailStr, db: Session):
-    return db.query(users_models.User).filter(users_models.User.email == user_email).first()
+    return (
+        db.query(users_models.User)
+        .filter(users_models.User.email == user_email)
+        .first()
+    )
 
 
 def validate_user(user_email: EmailStr, hashed_password: str, db: Session):
     user = get_user_by_email(user_email, db)
     if not user or (user.password != hashed_password):
-        raise HTTPException(
-            status_code=403, detail="Incorrect mail or password")
+        raise HTTPException(status_code=403, detail="Incorrect mail or password")
 
 
 def register_user(user: user_schemas.UserSignUpSchema, db: Session):
@@ -24,7 +27,7 @@ def register_user(user: user_schemas.UserSignUpSchema, db: Session):
         password=hash_password(user.password),
         username=user.username,
         surname=user.surname,
-        blocked=False
+        blocked=False,
     )
     try:
         db.add(db_user)
@@ -55,13 +58,16 @@ def unblock_user(user_db: users_models.User, db: Session):
 
 
 def get_data_by_id(user_id: int, db: Session):
-    user_db = db.query(users_models.User).filter(
-        users_models.User.user_id == user_id).first()
+    user_db = (
+        db.query(users_models.User).filter(users_models.User.user_id == user_id).first()
+    )
     return user_db.email, user_db.username, user_db.surname
 
 
 def get_user_by_id(user_id: int, db: Session):
-    return db.query(users_models.User).filter(users_models.User.user_id == user_id).first()
+    return (
+        db.query(users_models.User).filter(users_models.User.user_id == user_id).first()
+    )
 
 
 def get_blocked_users_count(db: Session):
@@ -70,9 +76,7 @@ def get_blocked_users_count(db: Session):
 
 def delete_added_users(db: Session):
     try:
-        db.query(users_models.User).filter(
-            users_models.User.user_id >= 6).delete()
+        db.query(users_models.User).filter(users_models.User.user_id >= 6).delete()
         db.commit()
     except Exception as e:
-        raise HTTPException(
-            status_code=500, detail="Could not delete users: " + e.__str__)
+        raise HTTPException(status_code=500, detail="Could not delete users: " + str(e))
