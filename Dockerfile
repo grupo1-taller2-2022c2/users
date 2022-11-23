@@ -18,7 +18,8 @@ RUN apt-get -y install \
 COPY ./requirements.txt /app/requirements.txt
 COPY ./tests /app/tests
 COPY ./run_tests.sh /app/
+COPY ./entrypoint.sh /app/
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-CMD ["bash", "entrypoint.sh"]
+CMD ["bash", "/app/entrypoint.sh"]
