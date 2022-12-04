@@ -30,7 +30,8 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
     profile = {
         "username": user_db.username,
         "surname": user_db.surname,
-        "ratings": ratings
+        "ratings": ratings,
+        "photo": user_db.photo
     }
     return profile
 
@@ -47,7 +48,8 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "email": useremail,
         "username": user_db.username,
         "surname": user_db.surname,
-        "ratings": ratings
+        "ratings": ratings,
+        "photo": user_db.photo
     }
     return profile
 
@@ -59,11 +61,6 @@ def update_passenger_profile(useremail: str, user: PassengerProfile, db: Session
         raise HTTPException(
             status_code=404, detail="The user doesn't exist")
     return update_passenger_profile_db(user, user_db, db)
-
-
-@router.patch("/picture/{useremail}", status_code=status.HTTP_200_OK)
-def update_passenger_picture(useremail: str, photo: bytes = File(default=None)):
-    return
 
 
 @router.post("/ratings", status_code=status.HTTP_201_CREATED)

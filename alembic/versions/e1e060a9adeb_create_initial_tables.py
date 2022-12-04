@@ -50,6 +50,7 @@ def upgrade() -> None:
                             sa.Column('surname', sa.String(
                                 length=50), nullable=False),
                             sa.Column('blocked', sa.Boolean(), nullable=False),
+                            sa.Column('photo', sa.String(length=150), nullable=True),
                             sa.PrimaryKeyConstraint('user_id')
                             )
     op.create_table('vehicles',

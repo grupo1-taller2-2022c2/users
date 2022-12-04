@@ -52,7 +52,8 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "surname": user_db.surname,
         "ratings": ratings,
         "licence_plate": vehicle_db.licence_plate,
-        "model": vehicle_db.model
+        "model": vehicle_db.model,
+        "photo": user_db.photo
     }
     return profile
 
@@ -75,7 +76,8 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "surname": user_db.surname,
         "ratings": ratings,
         "licence_plate": vehicle_db.licence_plate,
-        "model": vehicle_db.model
+        "model": vehicle_db.model,
+        "photo": user_db.photo
     }
     return profile
 
@@ -87,11 +89,6 @@ def update_driiver_profile(useremail: str, user: DriverProfile, db: Session = De
         raise HTTPException(
             status_code=404, detail="The user doesn't exist")
     return update_driiver_profile_db(user, user_db, db)
-
-
-@router.patch("/picture/{useremail}", status_code=status.HTTP_200_OK)
-def update_passenger_picture(useremail: str, photo: bytes = File(default=None)):
-    return
 
 
 @router.post("/ratings", status_code=status.HTTP_201_CREATED)

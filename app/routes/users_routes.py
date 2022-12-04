@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import List
+
+from app.cruds.users_cruds import store_profile_url
 from app.helpers.user_helpers import create_wallet_for_new_user, get_wallet_info, hash_password, send_login_notification_to_backoffice, withdraw_funds_from_user_wallet
 from fastapi import HTTPException
 from starlette import status
@@ -128,3 +130,10 @@ def get_user_id_from_email(user_email: EmailStr, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=403, detail="Incorrect username")
     return user_db.user_id
+
+
+@router.patch("/picture/{useremail}", status_code=status.HTTP_200_OK)
+def update_passenger_picture(useremail: str, photo: UserPhoto, db: Session = Depends(get_db)):
+    url = photo.photo_url
+    store_profile_url(useremail, url, db)
+    return {"url": url}

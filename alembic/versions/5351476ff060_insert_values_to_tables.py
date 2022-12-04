@@ -21,14 +21,15 @@ def upgrade() -> None:
     op.bulk_insert(users_models.User.__table__,
                    [
                        {'email': 'agus_su@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
-                        'username': 'agusmujer', 'surname': "su", 'blocked': False},
+                        'username': 'agusmujer', 'surname': "su", 'blocked': False, 'photo': None},
                        {'email': 'chino@hotmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
-                        'username': 'chino', 'surname': "g", 'blocked': False},
+                        'username': 'chino', 'surname': "g", 'blocked': False, 'photo': None},
                        {'email': 'mati@yahoo.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
-                        'username': 'mati', 'surname': "matii", 'blocked': False},
+                        'username': 'mati', 'surname': "matii", 'blocked': False, 'photo': None},
                        {'email': 'juani@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
-                        'username': 'juani', 'surname': "blabla", 'blocked': False},
-                       {'email': 'cristo@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'username': 'cristo', 'surname': "apellido", 'blocked': False}])
+                        'username': 'juani', 'surname': "blabla", 'blocked': False, 'photo': None},
+                       {'email': 'cristo@gmail.com', 'password': '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
+                        'username': 'cristo', 'surname': "apellido", 'blocked': False, 'photo': None}])
 
     op.bulk_insert(passengers_models.Passenger.__table__,
                    [

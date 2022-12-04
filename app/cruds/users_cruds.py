@@ -80,3 +80,16 @@ def delete_added_users(db: Session):
         db.commit()
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not delete users: " + str(e))
+
+
+def store_profile_url(useremail, photo_url, db: Session):
+    user = db.query(users_models.User).filter(users_models.User.email == useremail).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="The user doesnt exist")
+    try:
+        user.photo = photo_url
+        db.commit()
+        return
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Internal server error")
