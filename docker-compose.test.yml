@@ -6,7 +6,6 @@ services:
     container_name: users_container
     stdin_open: true 
     tty: true
-    entrypoint: ../start-reload.sh       
     links:
       - users_dev_db
     environment:
