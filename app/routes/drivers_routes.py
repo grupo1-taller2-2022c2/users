@@ -47,13 +47,16 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
             status_code=404, detail="The driver doesn't exist")
     vehicle_db = get_driver_vehicle(user_db.user_id, db)
     ratings = get_driver_average_ratings(useremail, db)
+    photo = user_db.photo
+    if photo is None:
+        photo = "https://firebasestorage.googleapis.com/v0/b/fiuber-365100.appspot.com/o/user.jpg?alt=media&token=2f59f69b-124a-4431-9091-48ea98d57c25"
     profile = {
         "username": user_db.username,
         "surname": user_db.surname,
         "ratings": ratings,
         "licence_plate": vehicle_db.licence_plate,
         "model": vehicle_db.model,
-        "photo": user_db.photo
+        "photo": photo
     }
     return profile
 
@@ -70,6 +73,9 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
             status_code=404, detail="The driver doesn't exist")
     vehicle_db = get_driver_vehicle(user_db.user_id, db)
     ratings = get_driver_average_ratings(useremail, db)
+    photo = user_db.photo
+    if photo is None:
+        photo = "https://firebasestorage.googleapis.com/v0/b/fiuber-365100.appspot.com/o/user.jpg?alt=media&token=2f59f69b-124a-4431-9091-48ea98d57c25"
     profile = {
         "email": useremail,
         "username": user_db.username,
@@ -77,7 +83,7 @@ def get_user(useremail: str, db: Session = Depends(get_db)):
         "ratings": ratings,
         "licence_plate": vehicle_db.licence_plate,
         "model": vehicle_db.model,
-        "photo": user_db.photo
+        "photo": photo
     }
     return profile
 

@@ -11,6 +11,7 @@ class PassengerProfile(BaseModel):
     username: str
     surname: str
     ratings: float
+    photo: str
 
 
 class PassengerSelfProfile(BaseModel):
@@ -18,6 +19,7 @@ class PassengerSelfProfile(BaseModel):
     username: str
     surname: str
     ratings: float
+    photo: str
 
 
 class PassengerRating(BaseModel):
