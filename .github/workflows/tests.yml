@@ -25,4 +25,4 @@ jobs:
       - name: Run containers
         run: docker-compose -f docker-compose.test.yml up -d
       - name: Run tests
-        run: docker-compose -f docker-compose.test.yml --abort-on-container-exit --exit-code-from users_backend exec -T users_backend bash ./run_tests.sh
+        run: docker-compose -f docker-compose.test.yml exec --exit-code-from users_backend -T users_backend bash ./run_tests.sh
