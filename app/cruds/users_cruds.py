@@ -34,8 +34,7 @@ def register_user(user: user_schemas.UserSignUpSchema, db: Session):
         db.commit()
         db.refresh(db_user)
         create_passenger(db_user.user_id, db)
-        # TODO: poner mailpassword o federatedidentity segun sea
-        send_reg_notification_to_backoffice("mailpassword")
+        send_reg_notification_to_backoffice(user.type_signup)
 
         return user_schemas.UserSchema.from_orm(db_user), db_user.user_id
     except Exception as e:
@@ -83,7 +82,9 @@ def delete_added_users(db: Session):
 
 
 def store_profile_url(useremail, photo_url, db: Session):
-    user = db.query(users_models.User).filter(users_models.User.email == useremail).first()
+    user = (
+        db.query(users_models.User).filter(users_models.User.email == useremail).first()
+    )
     if not user:
         raise HTTPException(status_code=404, detail="The user doesnt exist")
     try:

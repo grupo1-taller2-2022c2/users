@@ -11,6 +11,7 @@ class UserSignUpSchema(BaseModel):
     password: str
     username: str
     surname: str
+    type_signup: str = "mailpassword"
 
 
 class UserProfile(BaseModel):
