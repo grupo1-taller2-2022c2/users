@@ -23,7 +23,7 @@ jobs:
       - name: Build containers
         run: docker-compose -f docker-compose.test.yml build --exit-code-from users_backend
       - name: Run containers
-        run: docker-compose -f docker-compose.test.yml up -d --exit-code-from users_backend
+        run: docker-compose -f docker-compose.test.yml up -d
       - name: Print ls
         run: docker-compose -f docker-compose.test.yml exec --exit-code-from users_backend ls -T users_backend bash -c
       - name: Run tests
