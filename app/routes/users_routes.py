@@ -31,7 +31,6 @@ def grant_access(user: UserSignInSchema, db: Session = Depends(get_db)):
     hashed_password = hash_password(user.password)
     users_cruds.validate_user(user.email, hashed_password, db)
 
-    # TODO: poner mailpassword o federatedidentity segun sea
     send_login_notification_to_backoffice("mailpassword")
 
     return users_cruds.user_schemas.UserSchema.from_orm(user_db)
