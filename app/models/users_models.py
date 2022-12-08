@@ -10,3 +10,4 @@ class User(Base):
     username = Column(String(50), nullable=False)
     surname = Column(String(50), nullable=False)
     blocked = Column(Boolean, nullable=False)
+    photo = Column(String(50), nullable=True)

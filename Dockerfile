@@ -15,4 +15,11 @@ RUN apt-get -y install \
   gcc \
   && apt-get clean
 
-RUN pip install --no-cache-dir fastapi pydantic SQLAlchemy psycopg2 uvicorn alembic pydantic[email] python-multipart
+COPY ./requirements.txt /app/requirements.txt
+COPY ./tests /app/tests
+COPY ./run_tests.sh /app/
+COPY ./entrypoint.sh /app/
+
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+
+CMD ["bash", "/app/entrypoint.sh"]

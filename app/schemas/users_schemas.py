@@ -11,6 +11,7 @@ class UserSignUpSchema(BaseModel):
     password: str
     username: str
     surname: str
+    type_signup: str = "mailpassword"
 
 
 class UserProfile(BaseModel):
@@ -32,3 +33,12 @@ class UserSchema(BaseModel):
 
 class UserIsBlocked(BaseModel):
     is_blocked: bool
+
+
+class WalletWithdrawalSchema(BaseModel):
+    user_external_wallet_address: str
+    amount_in_ethers: str
+
+
+class UserPhoto(BaseModel):
+    photo_url: str
