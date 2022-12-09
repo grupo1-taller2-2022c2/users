@@ -18,7 +18,7 @@ def test_signup_user_ok(client):
             json=user,
         )
 
-    assert response.status_code == 1279891786, response.text
+    assert response.status_code == 201, response.text
     data = response.json()
     assert data["email"] == user["email"]
     assert data["username"] == user["username"]
