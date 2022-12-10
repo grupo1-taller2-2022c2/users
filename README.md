@@ -1,5 +1,9 @@
 # users
 
+[![codecov](https://codecov.io/gh/grupo1-taller2-2022c2/users/branch/main/graph/badge.svg?token=3ORAS48GHQ)](https://codecov.io/gh/grupo1-taller2-2022c2/users)
+[![Tests](https://github.com/grupo1-taller2-2022c2/users/actions/workflows/tests.yml/badge.svg)](https://github.com/grupo1-taller2-2022c2/users/actions/workflows/tests.yml)
+[![Deployment](https://github.com/grupo1-taller2-2022c2/users/actions/workflows/deploy.yml/badge.svg)](https://github.com/grupo1-taller2-2022c2/users/actions/workflows/deploy.yml)
+
 ## Base de datos
 - Se corre en el container postgres-container (servicio dev_db del docker-compose)
   
