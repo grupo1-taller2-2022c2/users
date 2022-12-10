@@ -25,7 +25,7 @@ jobs:
         with:
           file: docker-compose.test.yml
           service: users_backend
-          command: run_tests.sh #chequear donde me deja el archivo, si es dentro del container o no
+          command: run_tests.sh
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
         with:
