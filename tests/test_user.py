@@ -297,7 +297,7 @@ def test_unblock_user(client):
     assert response.status_code == 200
 
 
-def cannot_get_wallet_info(client):
+def test_cannot_get_wallet_info(client):
     with patch("app.helpers.user_helpers.requests.post") as mock_post:
         # Mockeo la llamada a wallets para crear la wallet
         mock_post.return_value.ok = True
@@ -307,7 +307,7 @@ def cannot_get_wallet_info(client):
     assert response.status_code == 403
 
 
-def get_wallet_info(client):
+def test_get_wallet_info(client):
     with patch("app.helpers.user_helpers.requests.post") as mock_post:
         # Mockeo la llamada a wallets para crear la wallet
         mock_post.return_value.ok = True
@@ -327,7 +327,7 @@ def get_wallet_info(client):
     assert response.status_code == 200
 
 
-def get_user_id(client):
+def test_get_user_id(client):
     with patch("app.helpers.user_helpers.requests.post") as mock_post:
         # Mockeo la llamada a wallets para crear la wallet
         mock_post.return_value.ok = True
@@ -348,7 +348,7 @@ def get_user_id(client):
     assert response.text == '1'
 
 
-def make_wallet_withdrawal(client):
+def test_make_wallet_withdrawal(client):
     with patch("app.helpers.user_helpers.requests.post") as mock_post:
         # Mockeo la llamada a wallets para crear la wallet
         mock_post.return_value.ok = True
@@ -371,10 +371,9 @@ def make_wallet_withdrawal(client):
             json=withdrawal
         )
     assert response.status_code == 200
-    assert response.status_code == 400
 
 
-def invalid_wallet_withdrawal(client):
+def test_invalid_wallet_withdrawal(client):
     with patch("app.helpers.user_helpers.requests.post") as mock_post:
         # Mockeo la llamada a wallets para crear la wallet
         mock_post.return_value.ok = True
