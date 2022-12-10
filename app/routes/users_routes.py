@@ -76,7 +76,7 @@ def block_user(user_email: EmailStr, db: Session = Depends(get_db)):
     if user_db.blocked:
         raise HTTPException(status_code=403, detail="The user is already blocked")
     users_cruds.block_user(user_db, db)
-    return "User blocked"
+    return {"message": "User blocked"}
 
 
 @router.post("/unblocked/{user_email}", status_code=status.HTTP_200_OK)
