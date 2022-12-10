@@ -87,7 +87,7 @@ def unblock_user(user_email: EmailStr, db: Session = Depends(get_db)):
     if not user_db.blocked:
         raise HTTPException(status_code=403, detail="The user is already unblocked")
     users_cruds.unblock_user(user_db, db)
-    return "User unblocked"
+    return {"message": "User unblocked"}
 
 
 @router.get("/{user_email}/wallet", status_code=status.HTTP_200_OK)
@@ -99,20 +99,6 @@ def get_user_wallet(user_email: EmailStr, db: Session = Depends(get_db)):
         raise HTTPException(status_code=403, detail="The user is already blocked")
 
     return get_wallet_info(user_db.user_id)
-
-
-@router.post("/{user_email}/wallet/withdrawals", status_code=status.HTTP_200_OK)
-def withdraw_funds_from_wallet(
-    user_email: EmailStr,
-    withdrawal_info: WalletWithdrawalSchema,
-    db: Session = Depends(get_db),
-):
-    user_db = users_cruds.get_user_by_email(user_email, db)
-    if not user_db:
-        raise HTTPException(status_code=403, detail="Incorrect username")
-    if user_db.blocked:
-        raise HTTPException(status_code=403, detail="The user is already blocked")
-    return withdraw_funds_from_user_wallet(user_db.user_id, withdrawal_info)
 
 
 @router.post("/{user_email}/wallet/withdrawals", status_code=status.HTTP_200_OK)
