@@ -119,12 +119,12 @@ def add_driver_rating(email, trip_id, rating, message, db: Session):
 def get_driver_average_ratings(email, db: Session):
     try:
         ratings = db.query(DriverRating).filter(DriverRating.email == email).all()
-        sum = 0
+        total = 0
         for rating in ratings:
-            sum += rating.ratings
+            total += rating.ratings
         if len(ratings) == 0:
             return 5
-        return sum / len(ratings)
+        return total / len(ratings)
     except Exception as _:
         raise HTTPException(status_code=500, detail="Internal server error")
 
