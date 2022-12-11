@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends
 from typing import List
 
+from app.cruds.drivers_cruds import get_driver_vehicle, get_driver_average_ratings
+from app.cruds.passengers_cruds import get_passenger_average_ratings
 from app.cruds.users_cruds import store_profile_url
 from app.helpers.user_helpers import (
     create_wallet_for_new_user,
@@ -46,9 +48,25 @@ def user_signup(user: UserSignUpSchema, db: Session = Depends(get_db)):
     return created_user
 
 
-@router.get("/", response_model=List[UserSchema], status_code=status.HTTP_200_OK)
+@router.get("/", response_model=List[UserFullInfo], status_code=status.HTTP_200_OK)
 def get_users(db: Session = Depends(get_db)):
-    return users_cruds.get_users_from_db(db)
+    users_db = users_cruds.get_users_from_db(db)
+    users = []
+    for user in users_db:
+        driver = get_driver_vehicle(user.user_id, db)
+        if driver:
+            driver_ratings = get_driver_average_ratings(user.email, db)
+            driver = {"ratings": driver_ratings, "licence_plate": driver.licence_plate, "model": driver.model}
+        new_user = {
+            "email": user.email,
+            "username": user.username,
+            "surname": user.surname,
+            "blocked": user.blocked,
+            "ratings": get_passenger_average_ratings(user.email, db),
+            "driver": driver
+        }
+        users.append(new_user)
+    return users
 
 
 @router.get("/blocked", status_code=status.HTTP_200_OK)
