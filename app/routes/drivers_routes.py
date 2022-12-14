@@ -28,7 +28,9 @@ def available_drivers(db: Session = Depends(get_db)):
     for driver in db_drivers:
         user_id = driver.user_id
         db_vehicle = get_driver_vehicle(user_id, db)
-        email, username, surname, photo = get_data_by_id(user_id, db)
+        email, username, surname, photo, is_blocked = get_data_by_id(user_id, db)
+        if is_blocked:
+            continue
         if photo is None:
             photo = "https://firebasestorage.googleapis.com/v0/b/fiuber-365100.appspot.com/o/user.jpg?alt=media&token=2f59f69b-124a-4431-9091-48ea98d57c25"
         response.append(
